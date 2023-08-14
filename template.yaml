@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  index-document-app
+
+  CloudFront index document Lambda@Edge application
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  EdgeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - arm64
+      AutoPublishAlias: live
+      AutoPublishAliasAllProperties: true
+
+Outputs:
+  EdgeFunction:
+    Description: "CloudFront - Lambda@Edge Function ARN"
+    Value: !GetAtt EdgeFunction.Arn
+  EdgeFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt EdgeFunctionRole.Arn
+
